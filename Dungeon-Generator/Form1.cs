@@ -95,14 +95,19 @@ namespace Dungeon_Generator
 
             for (int i = 0; i < CorridorsToRoom;)
             {
-                Random random = new Random();
-                RoomDirection = random.Next(2, 6);
+                Random random2 = new Random();
+                RoomDirection = random2.Next(2, 6);
             }
 
             for (int i = 0; i < NumberOfRooms; i++)
             {
 
             }
+
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
 
         }
     }
