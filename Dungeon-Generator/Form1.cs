@@ -110,19 +110,19 @@ namespace Dungeon_Generator
                     //    Det bliver fortalt til cellen hvor gangen går til, at der er en gang
                     switch (RoomDirection)
                     {
-                        case 3:
+                        case 2:
                             Celle[RoomXCoordinate][RoomYCoordinate + 1][4] = true;
                             Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
                             break;
-                        case 4:
+                        case 3:
                             Celle[RoomXCoordinate + 1][RoomYCoordinate][5] = true;
                             Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
                             break;
-                        case 5:
+                        case 4:
                             Celle[RoomXCoordinate][RoomYCoordinate - 1][2] = true;
                             Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
                             break;
-                        case 6:
+                        case 5:
                             Celle[RoomXCoordinate - 1][RoomYCoordinate][3] = true;
                             Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
                             break;
