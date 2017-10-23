@@ -71,6 +71,11 @@ namespace Dungeon_Generator
             RoomXCoordinate = x / 2 - 1;
             RoomYCoordinate = y / 2 - 1;
 
+            // Det bliver gemt at der er et rum på feltet
+            Celle[RoomXCoordinate][RoomYCoordinate][0] = true;
+
+            // Visuelt mangler her
+
             // Hvor mange gange ud over dem der alderede er der kan være fra rummet
             // Siden denne kun bruges til det første rum, skal der ikke tages stilling til alderede placerede gange
             if (NumberOfCorridors > 4)
@@ -90,20 +95,60 @@ namespace Dungeon_Generator
             }
 
             // på grund af at det maximale nummer ikke bliver taget med når man generere et tilfældigt nummer pluses der med 1
-            Random random = new Random();
-            CorridorsToRoom = random.Next(Minimum, Maximum + 1);
+            Random random1 = new Random();
+            CorridorsToRoom = random1.Next(Minimum, Maximum + 1);
 
             for (int i = 0; i < CorridorsToRoom;)
             {
-                Random random = new Random();
-                RoomDirection = random.Next(2, 6);
+                Random random2 = new Random();
+                RoomDirection = random2.Next(2, 6);
+
+                if (Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] == false)
+                {
+                    Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] = true;
+
+                    //    Det bliver fortalt til cellen hvor gangen går til, at der er en gang
+                    switch (RoomDirection)
+                    {
+                        case 3:
+                            Celle[RoomXCoordinate][RoomYCoordinate + 1][4] = true;
+                            Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
+                            break;
+                        case 4:
+                            Celle[RoomXCoordinate + 1][RoomYCoordinate][5] = true;
+                            Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
+                            break;
+                        case 5:
+                            Celle[RoomXCoordinate][RoomYCoordinate - 1][2] = true;
+                            Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
+                            break;
+                        case 6:
+                            Celle[RoomXCoordinate - 1][RoomYCoordinate][3] = true;
+                            Celle[RoomXCoordinate][RoomYCoordinate + 1][1] = true;
+                            break;
+                        default:
+                            MessageBox.Show("Noget gik galt");
+                            break;
+
+
+                            // visuelle ting burde ske her
+
+                    }
+                }
+                else
+                {
+                    i = i - 1;
+                }
             }
 
+            NumberOfRooms = NumberOfRooms - 1;
+
+
+            // Under bliver resten af rummene genereret 
             for (int i = 0; i < NumberOfRooms; i++)
             {
 
             }
-
         }
     }
 }
