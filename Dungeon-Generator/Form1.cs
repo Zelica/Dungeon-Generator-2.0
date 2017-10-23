@@ -22,6 +22,7 @@ namespace Dungeon_Generator
         int CorridorsToRoom = 0;
         int RoomDirection = 0;
         int RoomNumber = 0;
+        int RandomCellWithCorridor = 0;
 
         // antal celler ud ad x og y aksen
         int x = 10;
@@ -43,7 +44,7 @@ namespace Dungeon_Generator
 
             NumberOfRooms = int.Parse(numericUpDown1.Text);
 
-            NumberOfCorridors = NumberOfRooms - 1;
+            NumberOfCorridors = NumberOfRooms- 1;
             RoomNumber = 0;
 
             // Der laves et kordinatsystem af arrays in arrays hvor
@@ -51,6 +52,7 @@ namespace Dungeon_Generator
             // anden array angiver y kordinatet 
             // tredje array skal bruges til at glemme values i
             //    første (0) til fjere (3) bool er om der er en gang til feltet i rækkefølgen N, Ø, S, V
+            //    femte (4) bool er hvorvidt der er et rum i den celle
             bool[][][] Celle = new bool[x][][];
             for (int i = 0; i < x; i++)
             {
@@ -70,13 +72,13 @@ namespace Dungeon_Generator
 
             // liste over celler med gange og uden rum hvor det angives [nummeret på rummet][x og y kordinater (0 er x og 1 er y)]
             int[][] ListOfCellsWithCorridor = new int[NumberOfRooms - 1][];
-            for (int i = 0; i < NumberOfRooms; i++)
+            for (int i = 0; i <= NumberOfCorridors; i++)
             {
                 ListOfCellsWithCorridor[i] = new int [2];
 
                 for (int j = 0; j < 2; j++)
                 {
-                    ListOfCellsWithCorridor[i][j] = 0;
+                    ListOfCellsWithCorridor[i][j] = -1;
                 }
             }
 
@@ -90,7 +92,7 @@ namespace Dungeon_Generator
 
             // Visuelt mangler her
 
-            // Hvor mange gange ud over dem der alderede er der kan være fra rummet
+            // Hvor mange gange der kan være fra rummet
             // Siden denne kun bruges til det første rum, skal der ikke tages stilling til alderede placerede gange
             if (NumberOfCorridors > 4)
             {
@@ -121,7 +123,8 @@ namespace Dungeon_Generator
                 {
                     Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] = true;
 
-                    //    Det bliver fortalt til cellen hvor gangen går til, at der er en gang
+                    // Det bliver fortalt til cellen hvor gangen går til, at der er en gang
+                    // Og cellen hvor gangen går til tilføjes til en liste
                     switch (RoomDirection)
                     {
                         case 0:
@@ -166,15 +169,16 @@ namespace Dungeon_Generator
             // Under bliver resten af rummene genereret 
             for (int i = 0; i < NumberOfRooms; i++)
             {
-                
-                
-                
+                Random random3 = new Random();
+                RandomCellWithCorridor = random3.Next(0, NumberOfCorridors + 1);
+
+
                 // Det bliver gemt at der er et rum på feltet
-                Celle[RoomXCoordinate][RoomYCoordinate][0] = true;
+                Celle[RoomXCoordinate][RoomYCoordinate][4] = true;
 
                 // Visuelt mangler her
 
-                // Hvor mange gange ud over dem der alderede er der kan være fra rummet
+                // Hvor mange gange der kan være fra rummet
                 // Siden denne kun bruges til det første rum, skal der ikke tages stilling til alderede placerede gange
                 if (NumberOfCorridors > 4)
                 {
@@ -193,41 +197,51 @@ namespace Dungeon_Generator
                 }
 
                 // på grund af at det maximale nummer ikke bliver taget med når man generere et tilfældigt nummer pluses der med 1
-                Random random3 = new Random();
-                CorridorsToRoom = random3.Next(Minimum, Maximum + 1);
+                Random random4 = new Random();
+                CorridorsToRoom = random4.Next(Minimum, Maximum + 1);
 
                 for (int j = 0; j < CorridorsToRoom;)
                 {
-                    Random random2 = new Random();
-                    RoomDirection = random2.Next(0, 5);
+                    Random random5 = new Random();
+                    RoomDirection = random5.Next(0, 5);
 
                     if (Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] == false)
                     {
                         Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] = true;
 
-                        //    Det bliver fortalt til cellen hvor gangen går til, at der er en gang
+                        // Det bliver fortalt til cellen hvor gangen går til, at der er en gang
+                        // Og cellen hvor gangen går til tilføjes til en liste
                         switch (RoomDirection)
                         {
                             case 0:
                                 Celle[RoomXCoordinate][RoomYCoordinate + 1][2] = true;
+                                ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate;
+                                ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate + 1;
                                 break;
                             case 1:
                                 Celle[RoomXCoordinate + 1][RoomYCoordinate][3] = true;
+                                ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate + 1;
+                                ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate;
                                 break;
                             case 2:
                                 Celle[RoomXCoordinate][RoomYCoordinate - 1][0] = true;
+                                ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate;
+                                ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate - 1;
                                 break;
                             case 3:
                                 Celle[RoomXCoordinate - 1][RoomYCoordinate][1] = true;
+                                ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate - 1;
+                                ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate;
                                 break;
                             default:
                                 MessageBox.Show("Noget gik galt");
                                 break;
-
-
-                                // visuelle ting burde ske her
-
                         }
+
+
+                        // visuelle ting burde ske her
+
+
                     }
                     else
                     {
