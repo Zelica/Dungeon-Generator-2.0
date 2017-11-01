@@ -16,7 +16,6 @@ namespace Dungeon_Generator
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -26,33 +25,67 @@ namespace Dungeon_Generator
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //Skal forklares (hvad er hvad)
+            // Hvor mange rum er der mangler at blive genereret
             int NumberOfRoomsLeft = 0;
+
+            // brug til at finde ud af hvor mange korridore der kan placeres ud fra et rum
             int NumberOfCorridors = 0;
+
+            // Kordinaterne til et rum
             int RoomXCoordinate = 0;
             int RoomYCoordinate = 0;
+
+            // Minimum og maximum af korridore der må være ud fra et rum
             int Minimum = 0;
             int Maximum = 0;
+
+            // Antalet af korridore der bliver genereret ud fra et rum
             int NewCorridors = 0;
-            int RoomDirection = 0;
-            int RoomNumber = 0;
+
+            // Retningen Korridoren bliver genereret i ud fra rummet
+            int Direction = 0;
+
+            // Brug til liste over celler med korridore til uden et rum
+            int CellNumber = 0;
+
+            // Bruges til at finde et tilfældig cell med en korridor til hvor der så kan placeres et rum
             int RandomCellWithCorridor = 0;
+
+            // Antallet af punkter på listen over celler med korridore til uden et rum
             int ListMaximum = 0;
+
+            // Antal celler med minimum en korridor til
+            // Skal bruges til at beregne hvor mange korridore der må være ud fra et rum
             int CellsWithCorridorTo = 0;
+
+            // Antal korridorer det går til det rum der lige er sat
+            // Skal bruges til at beregne hvor mange korridore der må være ud fra et rum
             int NumberOfCorridorsToRoom = 0;
-            bool Room = false;
-            string Display = "some thing went wrong";
+
+            // Hvor mange af siderne i et rum der er ud til kanten af kordinatsystemet
+            int NumberOfSidesToEdge = 0;
+
+            // Hvad man skal ændre på i korrdinasættet fra det nuværende rum for at få det rum en korridor går til
+            int YModdifire = 0;
+            int XModdifire = 0;
+
+            // Den retning en korridor vil gå til en celle eller et rum 
+            int DirectionToRoom = 0;
+
+            // Antallet af korridore placeret alt i alt
+            int CorridorsPlaced = 0;
+
+            // placeringen af det første rum forgår anderledes derfor bruges denne til at teste det
             bool FirstRoom = true;
 
+            // Den string der bliver vist i tekstboksen til sidst
+            string Display = "";
+
             // antal celler ud ad x og y aksen
-            int x = 10;
-            int y = 10;
+            int x = 20;
+            int y = 20;
 
             NumberOfRoomsLeft = int.Parse(numericUpDown1.Text);
-
-            RoomNumber = 0;
-            CellsWithCorridorTo = 0;
 
             // Der laves et kordinatsystem af arrays in arrays hvor
             // første array angiver x kordinatet 
@@ -77,7 +110,7 @@ namespace Dungeon_Generator
                 }        
             }
 
-            // formelen under skal nok forklares eller ændres 
+            // formelen under beregner det maksimale antal korridore der kan placeres ud fra antalet at rum 
             ListMaximum = Convert.ToInt32(Math.Floor(2 * (NumberOfRoomsLeft - 1 * Math.Sqrt(NumberOfRoomsLeft))));
 
             // liste over celler med gange og uden rum hvor det angives [nummeret på rummet][x og y kordinater (0 er x og 1 er y)]
@@ -109,21 +142,10 @@ namespace Dungeon_Generator
                     do
                     {
                         Random random1 = new Random();
-                        RandomCellWithCorridor = random1.Next(0, ListMaximum);
-
-                        if (ListOfCellsWithCorridor[RandomCellWithCorridor][0] == -1 && ListOfCellsWithCorridor[RandomCellWithCorridor][1] == -1)
-                        {
-                            Room = false;
-                        }
-                        else
-                        {
-                            Room = true;
-                        }
-
+                        RandomCellWithCorridor = random1.Next(0, Math.Min(ListMaximum, CorridorsPlaced));
                     }
-                    while (!Room);
-                    // siden loopet bliver ved med at køre så lange statmentet er False 
-                    // og vi gerne vil havde det ttil at køre indtil det er sandt, sættes et udråbstegn
+                    while (ListOfCellsWithCorridor[RandomCellWithCorridor][0] == -1);
+                    // dette loop vil blive ved med at køre indtil at der er fundet et punkt på listen hvor der står noget
 
                     RoomXCoordinate = ListOfCellsWithCorridor[RandomCellWithCorridor][0];
                     RoomYCoordinate = ListOfCellsWithCorridor[RandomCellWithCorridor][1];
@@ -142,26 +164,39 @@ namespace Dungeon_Generator
 
                 NumberOfCorridors = NumberOfRoomsLeft - CellsWithCorridorTo;
 
+                // varabler sættes til 0 igen
                 NumberOfCorridorsToRoom = 0;
+                NumberOfSidesToEdge = 0;
 
                 for (int j = 0; j <= 3; j++)
                 {
-                    if(Celle[RoomXCoordinate][RoomYCoordinate][j])
+                    if (Celle[RoomXCoordinate][RoomYCoordinate][j])
                     {
                         NumberOfCorridorsToRoom = NumberOfCorridorsToRoom + 1;
                     }
+                }
+
+                // Under bliver der taget højde for hvis rummet der er placeret er ved siden af kanten
+                if (RoomXCoordinate == x - 1 || RoomXCoordinate == 0)
+                {
+                    NumberOfSidesToEdge++;
+                }
+
+                if (RoomYCoordinate == y - 1 || RoomYCoordinate == 0)
+                {
+                    NumberOfSidesToEdge++;
                 }
 
                 // Antalet af gange der kan placeres findes
                 if (NumberOfCorridors >= 4)
                 {
                     Minimum = 1;
-                    Maximum = 4 - NumberOfCorridorsToRoom;
+                    Maximum = Math.Min(4 - NumberOfCorridorsToRoom, 4 - NumberOfSidesToEdge);
                 }
                 else if (0 < NumberOfCorridors && NumberOfCorridors < 4)
                 {
                     Minimum = 1;
-                    Maximum = Math.Min(NumberOfCorridors, 4 - NumberOfCorridorsToRoom);
+                    Maximum = Math.Min(NumberOfCorridors, Math.Min(4 - NumberOfCorridorsToRoom, 4 - NumberOfSidesToEdge));
                     Celle[RoomXCoordinate][RoomYCoordinate][4] = true;
                 }
                 else
@@ -174,63 +209,43 @@ namespace Dungeon_Generator
                 Random random2 = new Random();
                 NewCorridors = random2.Next(Minimum, Maximum + 1);
 
-                NumberOfCorridors = NumberOfCorridors - NewCorridors;
+                CorridorsPlaced = CorridorsPlaced + NewCorridors;
 
                 for (int j = 0; j < NewCorridors; j++)
                 {
                     Random random3 = new Random();
-                    RoomDirection = random3.Next(0, 4);
+                    Direction = random3.Next(0, 4);
 
-                    if (Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] == false)
+                    if (Celle[RoomXCoordinate][RoomYCoordinate][Direction] == false)
                     {
-                        Celle[RoomXCoordinate][RoomYCoordinate][RoomDirection] = true;
+                        Celle[RoomXCoordinate][RoomYCoordinate][Direction] = true;
 
                         // Det bliver fortalt til cellen hvor gangen går til, at der er en gang
                         // Og cellen hvor gangen går til tilføjes til en liste
-                        switch (RoomDirection)
+                        switch (Direction)
                         {
                             case 0:
-                                Celle[RoomXCoordinate][RoomYCoordinate + 1][2] = true;
-                                if (Celle[RoomXCoordinate][RoomYCoordinate + 1][4] == false)
-                                {
-                                    CellsWithCorridorTo = CellsWithCorridorTo + 1;
-                                    ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate;
-                                    ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate + 1;
-                                }
-                                Celle[RoomXCoordinate][RoomYCoordinate + 1][4] = true;
+                                XModdifire = 0;
+                                YModdifire = 1;
+                                DirectionToRoom = 2;
                                 break;
 
                             case 1:
-                                Celle[RoomXCoordinate + 1][RoomYCoordinate][3] = true;
-                                if (Celle[RoomXCoordinate + 1][RoomYCoordinate][4] == false)
-                                {
-                                    CellsWithCorridorTo = CellsWithCorridorTo + 1;
-                                    ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate + 1;
-                                    ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate;
-                                }
-                                Celle[RoomXCoordinate + 1][RoomYCoordinate][4] = true;
+                                XModdifire = 1;
+                                YModdifire = 0;
+                                DirectionToRoom = 3;
                                 break;
 
                             case 2:
-                                Celle[RoomXCoordinate][RoomYCoordinate - 1][0] = true;
-                                if (Celle[RoomXCoordinate][RoomYCoordinate - 1][4] == false)
-                                {
-                                    CellsWithCorridorTo = CellsWithCorridorTo + 1;
-                                    ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate;
-                                    ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate - 1;
-                                }
-                                Celle[RoomXCoordinate][RoomYCoordinate - 1][4] = true;
+                                XModdifire = 0;
+                                YModdifire = -1;
+                                DirectionToRoom = 0;
                                 break;
 
                             case 3:
-                                Celle[RoomXCoordinate - 1][RoomYCoordinate][1] = true;
-                                if (Celle[RoomXCoordinate - 1][RoomYCoordinate][4] == false)
-                                {
-                                    CellsWithCorridorTo = CellsWithCorridorTo + 1;
-                                    ListOfCellsWithCorridor[RoomNumber][0] = RoomXCoordinate - 1;
-                                    ListOfCellsWithCorridor[RoomNumber][1] = RoomYCoordinate;
-                                }
-                                Celle[RoomXCoordinate - 1][RoomYCoordinate][4] = true;
+                                XModdifire = -1;
+                                YModdifire = 0;
+                                DirectionToRoom = 1;
                                 break;
 
                             default:
@@ -238,7 +253,23 @@ namespace Dungeon_Generator
                                 break;
                         }
 
-                        RoomNumber = RoomNumber + 1;
+                        try
+                        {
+                            Celle[RoomXCoordinate + XModdifire][RoomYCoordinate + YModdifire][DirectionToRoom] = true;
+                            if (Celle[RoomXCoordinate + XModdifire][RoomYCoordinate + YModdifire][4] == false)
+                            {
+                                CellsWithCorridorTo = CellsWithCorridorTo + 1;
+                                ListOfCellsWithCorridor[CellNumber][0] = RoomXCoordinate + XModdifire;
+                                ListOfCellsWithCorridor[CellNumber][1] = RoomYCoordinate + YModdifire;
+                            }
+                            Celle[RoomXCoordinate + XModdifire][RoomYCoordinate + YModdifire][4] = true;
+
+                            CellNumber = CellNumber + 1;
+                        }
+                        catch
+                        {
+                            j = j - 1;
+                        }
 
                     }
                     else
