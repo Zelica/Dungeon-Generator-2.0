@@ -264,7 +264,6 @@ namespace Dungeon_Generator
                         {
                             j = j - 1;
                         }
-
                     }
                     else
                     {
@@ -275,7 +274,7 @@ namespace Dungeon_Generator
 
             // Selve dugeonen bliver vist som tekst
             Display = "";
-            
+
             for (int i = y - 1; i > 0; i-- )
             {
                 for (int j = 0; j < x; j++)
@@ -311,9 +310,7 @@ namespace Dungeon_Generator
                 }
                 Display = Display + "\r\n";
             }
-
             textBox2.Text = Display;
-
         }
     }
 }
