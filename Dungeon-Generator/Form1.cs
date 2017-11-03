@@ -83,7 +83,7 @@ namespace Dungeon_Generator
 
             // antal celler ud ad x og y aksen
             int x = 50;
-            int y = 2;
+            int y = 50;
 
             NumberOfRoomsLeft = int.Parse(numericUpDown1.Text);
 

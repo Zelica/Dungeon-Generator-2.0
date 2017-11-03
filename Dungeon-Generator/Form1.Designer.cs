@@ -58,7 +58,7 @@
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(1852, 99);
+            this.textBox1.Size = new System.Drawing.Size(2396, 99);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "Dungeon Generator";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -105,9 +105,10 @@
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(1841, 1327);
+            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox2.Size = new System.Drawing.Size(1833, 1297);
             this.textBox2.TabIndex = 5;
+            this.textBox2.WordWrap = false;
             // 
             // textBox3
             // 
