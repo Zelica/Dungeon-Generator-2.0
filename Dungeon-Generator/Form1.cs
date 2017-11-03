@@ -125,7 +125,7 @@ namespace Dungeon_Generator
                 }
             }
 
-            // Under bliver resten af rummene genereret 
+            // Under bliver rummene genereret 
             for (int i = 0; i < NumberOfRoomsLeft;)
             {
                 if (FirstRoom == true)
