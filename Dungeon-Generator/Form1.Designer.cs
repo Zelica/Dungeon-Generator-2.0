@@ -80,7 +80,7 @@
             this.numericUpDown1.Location = new System.Drawing.Point(1939, 553);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Maximum = new decimal(new int[] {
-            60,
+            80,
             0,
             0,
             0});
@@ -101,7 +101,7 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(48, 155);
+            this.textBox2.Location = new System.Drawing.Point(56, 133);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -120,8 +120,8 @@
             this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(403, 201);
             this.textBox3.TabIndex = 6;
-            this.textBox3.Text = "The more rooms you generate the longer it will take. It is recormened not to gern" +
-    "erate over 40 rooms.";
+            this.textBox3.Text = "The more rooms you generate the longer it will take. It is recormened not to gene" +
+    "rate over 60 rooms.";
             // 
             // textBox4
             // 
