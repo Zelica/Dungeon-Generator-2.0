@@ -17,12 +17,6 @@ namespace Dungeon_Generator
         {
             InitializeComponent();
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             // Hvor mange rum er der mangler at blive genereret
@@ -87,7 +81,7 @@ namespace Dungeon_Generator
 
             NumberOfRoomsLeft = int.Parse(numericUpDown1.Text);
 
-            // Der laves et kordinatsystem af arrays in arrays hvor
+            // Der laves et koordinatsystem af arrays in arrays hvor
             // første array angiver x kordinatet 
             // anden array angiver y kordinatet 
             // tredje array skal bruges til at glemme values i
@@ -270,7 +264,6 @@ namespace Dungeon_Generator
                         {
                             j = j - 1;
                         }
-
                     }
                     else
                     {
@@ -281,7 +274,7 @@ namespace Dungeon_Generator
 
             // Selve dugeonen bliver vist som tekst
             Display = "";
-            
+
             for (int i = y - 1; i > 0; i-- )
             {
                 for (int j = 0; j < x; j++)
@@ -317,9 +310,7 @@ namespace Dungeon_Generator
                 }
                 Display = Display + "\r\n";
             }
-
             textBox2.Text = Display;
-
         }
     }
 }
