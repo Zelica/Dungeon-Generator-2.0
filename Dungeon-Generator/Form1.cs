@@ -312,5 +312,10 @@ namespace Dungeon_Generator
             }
             textBox2.Text = Display;
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
